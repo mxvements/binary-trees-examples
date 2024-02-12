@@ -26,18 +26,17 @@ t_tree	*ft_treenew(void *content)
 	treenode->right = NULL;
 	return (treenode);
 }
-/* TREE ADD */
 
-void	ft_treeadd_left(t_tree **tree, t_tree *new)
+/* TREE ADD */
+void	ft_treeadd_left(t_tree **root, t_tree *new)
 {
 	t_tree	*node;
 
-	node = *tree;
+	node = *root;
 	if (!node)
 		return ; //empty tree
 	node->left = new;
 }
-
 void	ft_treeadd_right(t_tree **root, t_tree *new)
 {
 	t_tree	*node;
@@ -46,6 +45,30 @@ void	ft_treeadd_right(t_tree **root, t_tree *new)
 	if (!node)
 		return ; //empty tree
 	node->right = new;
+}
+void	ft_treeadd(t_tree **root, t_tree *new)
+{
+	t_tree		*node;
+	t_content	*node_content;
+	t_content	*new_content;
+
+	node = *root;
+	node_content = node->content;
+	new_content = new->content;
+
+	if (node_content->nbr > new_content->nbr)
+	{
+		if (!node->left)
+			ft_treeadd_left(root, new);
+		ft_treeadd(&(node->left), new);
+	}
+	if (node_content->nbr < new_content->nbr)
+	{
+		if (!node->right)
+			ft_treeadd_right(root, new);
+		ft_treeadd(&(node->right), new);
+	}
+	
 }
 
 /* TREE LEAF (LAST) && TREE DEPTH */
@@ -99,7 +122,6 @@ t_tree	*ft_treelast(t_tree **root)
 }
 
 /* TREE SIZE RECURSIVE */
-
 int	ft_treesize_recursive(t_tree **root, int *count)
 {
 	t_tree	*node;
@@ -121,7 +143,6 @@ int	ft_treesize(t_tree **root)
 }
 
 /* PRINT TREE RECURSIVE */
-
 static void	printtabs(int numtabs)
 {
 	for (int i = 0; i < numtabs; i++)
@@ -173,13 +194,10 @@ void	ft_treeprint(t_tree **root)
 }
 
 /* TREE CLEAR */
-//void	ft_lstclear(t_list **lst, void (*del)(void *));
-
 void	del(void *content)
 {
 	free(content);
 }
-
 void	ft_treeclear(t_tree **root, void (*del)(void  *))
 {
 	if (!(*root))
@@ -232,12 +250,20 @@ int	main(void)
 	//define root
 	t_tree **root = &n1; 
 
+	/*
 	//connect them up into a BT
 	ft_treeadd_left(root, n2);
 	ft_treeadd_right(root, n3);
 	ft_treeadd_left(&n2, n4);
 	ft_treeadd_right(&n2, n5);
-	ft_treeadd_left(&n3, n6);
+	ft_treeadd_left(&n3, n6);*/
+
+	//build binary tree
+	ft_treeadd(root, n2);
+	ft_treeadd(root, n4);
+	ft_treeadd(root, n3);
+	ft_treeadd(root, n6);
+	ft_treeadd(root, n5);
 
 	//print tree
 	ft_treeprint(root);
@@ -252,16 +278,8 @@ int	main(void)
 	//printf depth
 	printf("depth last node: %d\n", ft_treedepth(root, ft_treelast(root)));
 
-	/*
-	//free
-	free(n1);
-	free(n2);
-	free(n3);
-	free(n4);
-	free(n5);
-	free(n6);*/
-
 	//tree clear
 	ft_treeclear(root, del);
+	system("leaks -q binary_trees.out");
 	return (0);
 }
