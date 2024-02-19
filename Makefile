@@ -6,6 +6,7 @@ SRC=	binary_trees.c \
 		ft_treelast.c \
 		ft_treesize.c \
 		ft_treeprint.c \
+		ft_treeiter.c \
 		ft_treeclear.c
 
 all:

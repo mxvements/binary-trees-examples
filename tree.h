@@ -31,4 +31,6 @@ void	ft_treeprint(t_tree **root); //depends on t_content
 //tree clear
 void	ft_treeclear(t_tree **root, void (*del)(void  *));
 void	del(void *content); //depends on t_content
+//tree iter
+void	ft_treeiter(t_tree **root, void (*f)(void *));
 #endif

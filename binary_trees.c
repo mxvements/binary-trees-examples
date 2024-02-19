@@ -34,6 +34,11 @@
 	- exctly
 */
 
+static void	printcontent_nbr(void *content)
+{
+	printf("%d\n", ((t_content *)content)->nbr);
+}
+
 int	main(void)
 {
 
@@ -87,6 +92,10 @@ int	main(void)
 
 	//printf depth
 	printf("depth last node: %d\n", ft_treedepth(root, ft_treelast(root)));
+
+	//use of ft_treeiter to print nbr on each node
+	printf("using treeiter to print nbr on each level/node: \n");
+	ft_treeiter(root, printcontent_nbr);
 
 	//tree clear
 	ft_treeclear(root, del);
